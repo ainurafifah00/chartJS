@@ -3,27 +3,55 @@
   <head>
     <meta charset="utf-8">
     <title>Student Performance Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" charset="utf-8"></script>
+
+    </script>
     </head>
   <body>
-    <script>
 
-      getData();
+    <canvas id="chart" width="300" height="300"></canvas>
+
+    <script>
+      const xlabels = [];
+      const ylabels = [];
+
+      chartIt();
+
+      async function chartIt(){
+        await getData();
+        var ctx = document.getElementById('chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: xlabels,
+                datasets: [{
+                    label: 'Students Writing Score',
+                    data: ylabels,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+      }
 
       async function getData() {
         const response = await fetch('StudentsPerformance.csv');
         const data = await response.text();
         //console.log(data);
 
-        const rows = data.split('\n').slice(1);
-        rows.forEach(elt => {
-          const n_row = elt.replace(/['"]+/g, '');
-          const row = n_row.split(',');
-          const gender = row[0];
-          const writing_score = row[7];
+        const table = data.split('\n').slice(1);
+        table.forEach(row => {
+          const columns = row.replace(/['"]+/g, '');
+          const column = columns.split(',');
+          const gender = column[0];
+          xlabels.push(gender);
+          const writing_score = column[7];
+          ylabels.push(writing_score);
           console.log(gender, writing_score);
 
         })
-        //console.log(rows);
+
       }
     </script>
 
