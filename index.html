@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Student Performance Visualization</title>
+    </head>
+  <body>
+    <script>
+
+      getData();
+
+      async function getData() {
+        const response = await fetch('test.csv');
+        const data = await response.text();
+        console.log(data);
+
+        const rows = data.split('\n');
+        console.log(rows);
+      }
+    </script>
+
+  </body>
+</html>
